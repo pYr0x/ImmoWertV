@@ -1,4 +1,4 @@
-# ImmoWert
+# ImmoWertV
 
 Private Web-App zur Verkehrswertermittlung einer Wohnimmobilie nach dem
 **Sachwertverfahren der ImmoWertV** (§§ 35–39, in Kraft seit 01.01.2022).
@@ -33,8 +33,7 @@ Stack: Vite + Svelte 5 + TypeScript + Tailwind CSS 4 + shadcn-svelte
 
 ## Deployment (Cloudflare)
 
-1. Repo zu GitHub pushen (privates Repo — `docs/` ist bis auf die ADRs
-   von Git ausgenommen).
+1. Repo zu GitHub pushen.
 2. Cloudflare-Dashboard → *Workers & Pages* → *Create* → *Connect to Git*.
 3. Build-Command `pnpm build` (oder `npm run build`), Output-Verzeichnis `dist`.
 4. Jeder Push deployt automatisch.
