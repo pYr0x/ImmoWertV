@@ -1,0 +1,11 @@
+node_modules/
+dist/
+
+# Muster-Gutachten und andere private Unterlagen nicht versionieren —
+# die ADRs in docs/adr/ bleiben aber im Repo
+docs/*
+!docs/adr/
+
+# Claude Code: lokale, maschinenspezifische Einstellungen
+.claude/settings.local.json
+immowertv_index.html
