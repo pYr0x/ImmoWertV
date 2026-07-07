@@ -81,8 +81,8 @@ export function defaultState(): AppState {
     bpi: {
       indexWert: 130.8,
       indexQuartal: "IV. Quartal 2024",
-      index2010: 90.1,
-      index2021: 127.0,
+      index2010: 70.8,
+      index2021: 100,
       override: null,
     },
     haus: {

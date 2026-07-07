@@ -7,17 +7,6 @@ amtlichen Verordnungstext (gesetze-im-internet.de). Der Rechenkern reproduziert
 beide Gutachten centgenau (siehe `src/lib/berechnung/sachwert.beispiele.test.ts`);
 die folgenden Punkte sind Modell-/Feature-Lücken, keine Rechenfehler.
 
-## 1. BPI-Standardkonstanten auf amtliche Destatis-Umbasierung umstellen
-
-- **Ist:** Defaults in `src/lib/state.ts`: `index2010: 90.1`, `index2021: 127.0`
-  (Basis 2015) → umbasiert 2010 = 70,94 auf Basis 2021.
-- **Soll:** Destatis' amtlich umbasierter Jahreswert 2010 ist **70,8** (Basis 2021 = 100).
-  Ergibt z. B. für Index 133,6 den Faktor 1,887 statt 1,883 (~0,2 % Abweichung im Gebäudewert).
-- **Anpassung:** Defaults auf `index2010: 70.8`, `index2021: 100` ändern (Formel in
-  `baupreisindexFaktor` deckt beide Parametrisierungen bereits ab), Beschriftung/Tooltip
-  in der UI entsprechend anpassen. Muster-Gutachten-Tests nutzen weiterhin 90,1/127,0
-  als explizite Eingabe — die bleiben unberührt.
-
 ## 2. Herstellungskosten sonstiger Bauteile ergänzen
 
 - **Ist:** Kein Eingabefeld für Zuschläge auf die Herstellungskosten vor der
@@ -67,6 +56,10 @@ die folgenden Punkte sind Modell-/Feature-Lücken, keine Rechenfehler.
 
 ## Erledigt (im Zuge der Validierung)
 
+- ~~BPI-Standardkonstanten auf amtliche Destatis-Umbasierung umgestellt~~ — Defaults in
+  `src/lib/state.ts` auf `index2010: 70.8`, `index2021: 100` (Basis 2021 = 100) geändert,
+  UI-Labels/Hinweis in `App.svelte` angepasst. Muster-Gutachten-Tests nutzen weiterhin
+  90,1/127,0 als explizite Eingabe — unberührt, 44 Tests grün.
 - ~~70-%-Kappung der RND entfernt~~ — die „maximal 70 % der GND" in Anlage 2 sind die
   Modellasymptote für sehr alte Gebäude, keine Rechenanweisung; die Kappung hätte junge
   modernisierte Gebäude fälschlich beschnitten (Burscheid: 56 statt 58 Jahre).
