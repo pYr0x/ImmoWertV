@@ -2,7 +2,9 @@
 
 Alle nennenswerten Änderungen an dieser App werden hier dokumentiert.
 
-## [Unveröffentlicht] – 2026-07-07
+## [1.1.0] – 2026-07-07
+
+Erste produktionsreife Fassung nach Validierung gegen zwei reale Gutachten.
 
 ### Neu
 
@@ -20,6 +22,10 @@ Alle nennenswerten Änderungen an dieser App werden hier dokumentiert.
 
 ### Geändert
 
+- **BPI-Standardkonstanten** auf die amtliche Destatis-Umbasierung (Basis 2021 = 100)
+  umgestellt: Defaults in `src/lib/state.ts` auf `index2010: 70.8`, `index2021: 100`
+  geändert, UI-Labels und Hinweis in `App.svelte` entsprechend angepasst. Die
+  Muster-Gutachten-Tests verwenden weiterhin 90,1/127,0 als explizite Eingabe.
 - **Formelanzeigen** durchgängig um die symbolische Gleichung ergänzt
   (z. B. `Herstellungskosten = Kennwert (Stichtag) × BGF = …`), damit jeder
   Rechenschritt ohne Vorwissen nachvollziehbar ist.

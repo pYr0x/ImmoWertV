@@ -1,4 +1,4 @@
-# ImmoWert
+# ImmoWertV
 
 Eine private Web-App, mit der ein Hausbesitzer den Verkehrswert seiner Doppelhaushälfte nach dem Sachwertverfahren der ImmoWertV (in Kraft seit 01.01.2022) transparent und nachvollziehbar berechnet. Jede Eingabeänderung aktualisiert das Ergebnis sofort; alle Formeln sind sichtbar.
 

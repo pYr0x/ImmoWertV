@@ -23,31 +23,47 @@
 <div class="space-y-2">
   {#each MODERNISIERUNGSELEMENTE as element (element.id)}
     {@const wert = punkte[element.id] ?? 0}
-    <div class="flex items-center justify-between gap-2">
-      <span class="text-sm">{element.bezeichnung}</span>
-      <div class="flex shrink-0 items-center gap-1">
-        <Button
-          variant="outline"
-          size="icon"
-          class="no-print size-7"
-          disabled={wert <= 0}
-          onclick={() => schritt(element.id, element.maxPunkte, -1)}
-          aria-label="Punkt abziehen"
-        >
-          <Minus class="size-3" />
-        </Button>
-        <span class="w-14 text-center font-mono text-sm">{wert} / {element.maxPunkte}</span>
-        <Button
-          variant="outline"
-          size="icon"
-          class="no-print size-7"
-          disabled={wert >= element.maxPunkte}
-          onclick={() => schritt(element.id, element.maxPunkte, 1)}
-          aria-label="Punkt vergeben"
-        >
-          <Plus class="size-3" />
-        </Button>
+    <div class="space-y-1">
+      <div class="flex items-center justify-between gap-2">
+        <span class="text-sm">{element.bezeichnung}</span>
+        <div class="flex shrink-0 items-center gap-1">
+          <Button
+            variant="outline"
+            size="icon"
+            class="no-print size-7"
+            disabled={wert <= 0}
+            onclick={() => schritt(element.id, element.maxPunkte, -1)}
+            aria-label="Punkt abziehen"
+          >
+            <Minus class="size-3" />
+          </Button>
+          <span class="w-14 text-center font-mono text-sm">{wert} / {element.maxPunkte}</span>
+          <Button
+            variant="outline"
+            size="icon"
+            class="no-print size-7"
+            disabled={wert >= element.maxPunkte}
+            onclick={() => schritt(element.id, element.maxPunkte, 1)}
+            aria-label="Punkt vergeben"
+          >
+            <Plus class="size-3" />
+          </Button>
+        </div>
       </div>
+      <Collapsible.Root>
+        <Collapsible.Trigger
+          class="text-amber-700 hover:text-amber-800 dark:text-amber-500 dark:hover:text-amber-400 no-print inline-flex items-center gap-1 text-xs"
+        >
+          <ChevronDown class="size-3" /> Erläuterung (nicht amtlich)
+        </Collapsible.Trigger>
+        <Collapsible.Content>
+          <p
+            class="mt-1 rounded border-l-2 border-amber-400 bg-amber-50 px-2 py-1 text-xs text-amber-900 dark:border-amber-600 dark:bg-amber-950/40 dark:text-amber-200"
+          >
+            {element.erlaeuterung}
+          </p>
+        </Collapsible.Content>
+      </Collapsible.Root>
     </div>
   {/each}
   <div class="flex items-center justify-between border-t pt-2 text-sm font-semibold">

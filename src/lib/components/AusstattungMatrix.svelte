@@ -67,7 +67,7 @@
         <tr class={`border-b align-top ${gueltig ? "" : "bg-destructive/10"}`}>
           <td class="py-2 pr-2">
             <div class="font-medium">{kg.name}</div>
-            {#if kg.beschreibungen.some((b) => b)}
+            {#if kg.beschreibungen.some((b) => b) || kg.erweiterungen?.some((b) => b)}
               <Collapsible.Root>
                 <Collapsible.Trigger
                   class="text-muted-foreground hover:text-foreground no-print inline-flex items-center gap-1 text-xs"
@@ -77,14 +77,26 @@
                 <Collapsible.Content>
                   <dl class="text-muted-foreground mt-1 max-w-xl space-y-1 text-xs">
                     {#each kg.beschreibungen as beschreibung, stufe (stufe)}
-                      {#if beschreibung}
+                      {@const erg = kg.erweiterungen?.[stufe]}
+                      {#if beschreibung || erg}
                         <div>
                           <dt class="inline font-semibold">Stufe {stufe + 1}:</dt>
-                          <dd class="inline">{beschreibung}</dd>
+                          {#if beschreibung}<dd class="inline">{beschreibung}</dd>{/if}
+                          {#if erg}
+                            <dd class="mt-0.5 block text-sky-700 dark:text-sky-400">
+                              <span class="font-medium">↳ Ergänzung:</span> {erg}
+                            </dd>
+                          {/if}
                         </div>
                       {/if}
                     {/each}
                   </dl>
+                  {#if kg.erweiterungen?.some((b) => b)}
+                    <p class="text-sky-700/80 dark:text-sky-400/80 mt-1 max-w-xl text-[11px] italic">
+                      Blau markierte „Ergänzungen“ stammen nicht aus der ImmoWertV, sondern sind
+                      ergänzende Einordnungshilfen (NHK 2010 / Sachwertrichtlinie, Bewertungspraxis).
+                    </p>
+                  {/if}
                 </Collapsible.Content>
               </Collapsible.Root>
             {/if}

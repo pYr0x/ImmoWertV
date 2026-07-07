@@ -317,8 +317,14 @@
             hinweis="Destatis, Preisindizes für die Bauwirtschaft — Quartal des Stichtags wählen"
           />
           <Feld label="Bezeichnung des Quartals" typ="text" bind:value={s.bpi.indexQuartal} />
-          <Feld label="Index 2010 (alte Basis, Modellkonstante)" step="0.1" min={0} bind:value={s.bpi.index2010} />
-          <Feld label="Index 2021 (alte Basis, Modellkonstante)" step="0.1" min={0} bind:value={s.bpi.index2021} />
+          <Feld
+            label="Index 2010 (Jahreswert auf Basis 2021 = 100)"
+            step="0.1"
+            min={0}
+            bind:value={s.bpi.index2010}
+            hinweis="Destatis, amtlich umbasierter Jahreswert 2010 = 70,8 (Basis 2021 = 100)"
+          />
+          <Feld label="Index 2021 (Bezugsjahr = 100)" step="0.1" min={0} bind:value={s.bpi.index2021} />
         </div>
         <Formel
           beschriftung="Umbasierung auf NHK-Basisjahr 2010"
