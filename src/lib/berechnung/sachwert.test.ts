@@ -134,10 +134,11 @@ describe("Restnutzungsdauer (Muster S. 22/23)", () => {
     expect(erg.rnd).toBe(60);
   });
 
-  it("Kappung bei 70 % der GND", () => {
-    // 20 Punkte, hohes Alter: Formel würde RND über 56 Jahre (70 % von 80) ergeben
+  it("Modellasymptote: bei Alter ≈ GND und 20 Punkten ergibt die Formel ~70 % der GND", () => {
+    // 0,2·79²/80 − 0,44·79 + 0,942·80 = 56,20 → 56 Jahre (70 % von 80 = 56);
+    // eine zusätzliche Kappung sieht Anlage 2 nicht vor (vgl. sachwert.beispiele.test.ts)
     const erg = restnutzungsdauer(80, 79, 20);
-    expect(erg.rnd).toBeLessThanOrEqual(56);
+    expect(erg.rnd).toBe(56);
   });
 
   it("Garage: RND = GND − Alter = 80 − 39 = 41 Jahre", () => {

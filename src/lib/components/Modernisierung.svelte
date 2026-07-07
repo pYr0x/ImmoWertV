@@ -1,7 +1,8 @@
 <script lang="ts">
   import { MODERNISIERUNGSELEMENTE, MAX_MODERNISIERUNGSPUNKTE, modernisierungsgrad } from "$lib/data/modernisierung";
   import { Button } from "$lib/components/ui/button";
-  import { Minus, Plus } from "@lucide/svelte";
+  import * as Collapsible from "$lib/components/ui/collapsible";
+  import { ChevronDown, Minus, Plus } from "@lucide/svelte";
 
   let {
     punkte = $bindable(),
@@ -56,4 +57,35 @@
   <p class="text-muted-foreground text-xs">
     Modernisierungsgrad nach Tabelle 2: <span class="font-medium">{modernisierungsgrad(summe)}</span>
   </p>
+  <Collapsible.Root>
+    <Collapsible.Trigger
+      class="text-muted-foreground hover:text-foreground no-print inline-flex items-center gap-1 text-xs"
+    >
+      <ChevronDown class="size-3" /> Amtliche Hinweise zur Punktevergabe (Anlage 2 Abschnitt I)
+    </Collapsible.Trigger>
+    <Collapsible.Content>
+      <ul class="text-muted-foreground mt-1 list-disc space-y-1 pl-4 text-xs">
+        <li>
+          Punkte sind für die zum Stichtag oder kurz vor dem Stichtag durchgeführten
+          Modernisierungsmaßnahmen zu vergeben. Liegen die Maßnahmen weiter zurück, ist zu prüfen,
+          ob nicht weniger als die maximal zu vergebenden Punkte anzusetzen sind.
+        </li>
+        <li>
+          Wenn nicht modernisierte Bauelemente noch zeitgemäßen Ansprüchen genügen, sind mit einer
+          Modernisierung vergleichbare Punkte zu vergeben.
+        </li>
+        <li>
+          Alternativ kann die Punktzahl durch sachverständige Einschätzung des Modernisierungsgrades
+          nach Tabelle 2 ermittelt werden (z. B. „überwiegend modernisiert" ≙ 11–17 Punkte).
+        </li>
+        <li>
+          Kernsanierung: Das Gebäude wird in einen Zustand versetzt, der nahezu einem neuen Gebäude
+          entspricht. Dann ist als Baujahr das Jahr der fachgerechten Sanierung anzusetzen (Restnutzungsdauer
+          bis zu 90 % der Gesamtnutzungsdauer); verbliebene alte Bausubstanz ist durch einen Abschlag
+          zu berücksichtigen.
+        </li>
+        <li>Das Punktemodell ersetzt nicht die sachverständige Würdigung des Einzelfalls.</li>
+      </ul>
+    </Collapsible.Content>
+  </Collapsible.Root>
 </div>

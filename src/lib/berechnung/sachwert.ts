@@ -163,8 +163,6 @@ export interface RndErgebnis {
   rndMathematisch: number;
   /** Ergebnis in ganzen Jahren */
   rnd: number;
-  /** Kappung auf 70 % der GND aktiv geworden */
-  gekappt: boolean;
 }
 
 export function restnutzungsdauer(gnd: number, alter: number, punkte: number): RndErgebnis {
@@ -182,14 +180,14 @@ export function restnutzungsdauer(gnd: number, alter: number, punkte: number): R
       koeffizienten: { a: zeile.a, b: zeile.b, c: zeile.c },
       rndMathematisch,
       rnd: Math.round(rndMathematisch),
-      gekappt: false,
     };
   }
 
+  // Die "maximal 70 % der GND" in Anlage 2 beschreiben die Modellasymptote für
+  // sehr alte Gebäude (Alter = GND, 20 Punkte → 0,702·GND), keine Kappung: die
+  // Formel liefert für junge modernisierte Gebäude regulär mehr (max. 0,9·GND).
   const roh = (zeile.a * alterEff * alterEff) / gnd - zeile.b * alterEff + zeile.c * gnd;
-  const max70 = 0.7 * gnd;
-  const gekappt = roh > max70;
-  const rnd = Math.round(Math.max(0, Math.min(roh, max70)));
+  const rnd = Math.round(Math.max(0, roh));
 
   return {
     alter: alterEff,
@@ -199,7 +197,6 @@ export function restnutzungsdauer(gnd: number, alter: number, punkte: number): R
     koeffizienten: { a: zeile.a, b: zeile.b, c: zeile.c },
     rndMathematisch,
     rnd,
-    gekappt,
   };
 }
 

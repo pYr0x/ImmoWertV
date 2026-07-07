@@ -25,7 +25,7 @@
   const id = `feld-${Math.random().toString(36).slice(2, 9)}`;
 </script>
 
-<div class="grid gap-1.5">
+<div class="grid content-start gap-1.5">
   <Label for={id}>{label}</Label>
   <div class="flex items-center gap-2">
     {#if typ === "number"}

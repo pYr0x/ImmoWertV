@@ -12,11 +12,14 @@
     sachwertKette,
   } from "$lib/berechnung/sachwert";
   import { NHK_TYPEN, nhkTyp } from "$lib/data/nhk2010";
+  import { standardsFuer } from "$lib/data/standards";
+  import { BGF_HINWEIS, GARAGEN_STUFEN_HINWEIS, hinweiseFuer } from "$lib/data/hinweise";
   import { MODERNISIERUNGSELEMENTE } from "$lib/data/modernisierung";
   import { ausstattungErgaenzen, kostengruppenFuer, ladeState, speichereState, stateAusJson } from "$lib/state";
   import { eur, num, num3, pct } from "$lib/format";
 
   import Abschnitt from "$lib/components/Abschnitt.svelte";
+  import AmtlicherHinweis from "$lib/components/AmtlicherHinweis.svelte";
   import AusstattungMatrix from "$lib/components/AusstattungMatrix.svelte";
   import Feld from "$lib/components/Feld.svelte";
   import Formel from "$lib/components/Formel.svelte";
@@ -244,6 +247,9 @@
           {#if hausTyp.hinweis}
             <p class="text-muted-foreground text-xs">{hausTyp.hinweis}</p>
           {/if}
+          {#each hinweiseFuer(hausTyp.code) as h (h.quelle + h.punkte[0])}
+            <AmtlicherHinweis hinweis={h} titel="Amtlicher Hinweis zur Gebäudeart" />
+          {/each}
         </div>
         <div class="grid gap-4 sm:grid-cols-3">
           <Feld label="Baujahr" min={1800} bind:value={s.haus.baujahr} />
@@ -266,6 +272,7 @@
         </div>
         <Separator />
         <GeschossListe bind:geschosse={s.haus.geschosse} />
+        <AmtlicherHinweis hinweis={BGF_HINWEIS} titel="Was zählt zur Brutto-Grundfläche?" />
       </Abschnitt>
 
       <!-- 4. Haus: Ausstattungsgrad -->
@@ -282,6 +289,7 @@
           bind:ausstattung={s.haus.ausstattung}
           bind:gewichte={s.haus.gewichte}
           gewichteAmtlich={hausTyp.gruppe === "wohnhaus"}
+          referenz={standardsFuer(hausTyp.code)}
         />
         <Formel
           beschriftung="Gewichteter Kostenkennwert (Basis 2010)"
@@ -346,9 +354,9 @@
       <Abschnitt titel="6. Hauptgebäude – Herstellungskosten" paragraf="§ 36 ImmoWertV">
         <Formel
           zeilen={[
-            `Kennwert (2010, angepasst) = ${eur(hausAusstattung.kennwert)}/m² × ${num(s.haus.anpassungsfaktor)} = ${eur(hausHk.kennwertAngepasst)}/m²`,
-            `Kennwert (Stichtag) = ${eur(hausHk.kennwertAngepasst)}/m² × ${num3(bpi.faktor)} = ${eur(hausHk.kennwertStichtag)}/m²`,
-            `Herstellungskosten = ${eur(hausHk.kennwertStichtag)}/m² × ${num(hausBgf)} m² BGF = ${eur(hausHk.herstellungskosten)}`,
+            `Kennwert (2010, angepasst) = Kennwert (2010) × objektspez. Anpassungsfaktor = ${eur(hausAusstattung.kennwert)}/m² × ${num(s.haus.anpassungsfaktor)} = ${eur(hausHk.kennwertAngepasst)}/m²`,
+            `Kennwert (Stichtag) = Kennwert (2010, angepasst) × BPI-Faktor = ${eur(hausHk.kennwertAngepasst)}/m² × ${num3(bpi.faktor)} = ${eur(hausHk.kennwertStichtag)}/m²`,
+            `Herstellungskosten = Kennwert (Stichtag) × BGF = ${eur(hausHk.kennwertStichtag)}/m² × ${num(hausBgf)} m² = ${eur(hausHk.herstellungskosten)}`,
           ]}
         />
       </Abschnitt>
@@ -365,7 +373,7 @@
             ...(hausRnd.formelAngewendet
               ? [
                   `RND = a·Alter²/GND − b·Alter + c·GND   (a=${hausRnd.koeffizienten.a}; b=${hausRnd.koeffizienten.b}; c=${hausRnd.koeffizienten.c})`,
-                  `RND = ${hausRnd.koeffizienten.a}·${hausRnd.alter}²/${s.haus.gnd} − ${hausRnd.koeffizienten.b}·${hausRnd.alter} + ${hausRnd.koeffizienten.c}·${s.haus.gnd} = ${hausRnd.rnd} Jahre${hausRnd.gekappt ? " (gekappt auf 70 % der GND)" : ""}`,
+                  `RND = ${hausRnd.koeffizienten.a}·${hausRnd.alter}²/${s.haus.gnd} − ${hausRnd.koeffizienten.b}·${hausRnd.alter} + ${hausRnd.koeffizienten.c}·${s.haus.gnd} = ${hausRnd.rnd} Jahre`,
                 ]
               : [`RND = ${s.haus.gnd} − ${hausRnd.alter} = ${hausRnd.rnd} Jahre`]),
             `Zum Vergleich ohne Modernisierung: RND = ${hausRnd.rndMathematisch} Jahre`,
@@ -378,8 +386,8 @@
         <Formel
           zeilen={[
             `AWM = (GND − RND) × 100 / GND = (${s.haus.gnd} − ${hausRnd.rnd}) × 100 / ${s.haus.gnd} = ${pct(hausAwm.prozent)}`,
-            `Abzug = ${eur(hausHk.herstellungskosten)} × ${pct(hausAwm.prozent)} = ${eur(hausAwm.betrag)}`,
-            `Sachwert Hauptgebäude = ${eur(hausHk.herstellungskosten)} − ${eur(hausAwm.betrag)} = ${eur(hausAwm.restwert)}`,
+            `Abzug = Herstellungskosten × AWM = ${eur(hausHk.herstellungskosten)} × ${pct(hausAwm.prozent)} = ${eur(hausAwm.betrag)}`,
+            `Sachwert Hauptgebäude = Herstellungskosten − Abzug = ${eur(hausHk.herstellungskosten)} − ${eur(hausAwm.betrag)} = ${eur(hausAwm.restwert)}`,
           ]}
         />
       </Abschnitt>
@@ -416,6 +424,11 @@
           </div>
           <GeschossListe bind:geschosse={s.garage.geschosse} />
           <Separator />
+          <AmtlicherHinweis
+            hinweis={GARAGEN_STUFEN_HINWEIS}
+            titel="Bedeutung der Standardstufen bei Garagen"
+            offen
+          />
           {#if garageAusstattung.ungueltigeGruppen.length}
             <p class="text-destructive text-sm font-medium">Anteile je Kostengruppe müssen in Summe 100 % ergeben.</p>
           {/if}
@@ -425,14 +438,15 @@
             bind:ausstattung={s.garage.ausstattung}
             bind:gewichte={s.garage.gewichte}
             gewichteAmtlich={false}
+            referenz={standardsFuer(garageTyp.code)}
           />
           <Formel
             zeilen={[
-              `Kennwert = ${eur(garageAusstattung.kennwert)}/m² × ${num(s.garage.anpassungsfaktor)} × ${num3(bpi.faktor)} = ${eur(garageHk.kennwertStichtag)}/m²`,
-              `Herstellungskosten = ${eur(garageHk.kennwertStichtag)}/m² × ${num(garageBgf)} m² BGF = ${eur(garageHk.herstellungskosten)}`,
+              `Kennwert (Stichtag) = Kennwert (2010) × objektspez. Anpassungsfaktor × BPI-Faktor = ${eur(garageAusstattung.kennwert)}/m² × ${num(s.garage.anpassungsfaktor)} × ${num3(bpi.faktor)} = ${eur(garageHk.kennwertStichtag)}/m²`,
+              `Herstellungskosten = Kennwert (Stichtag) × BGF = ${eur(garageHk.kennwertStichtag)}/m² × ${num(garageBgf)} m² = ${eur(garageHk.herstellungskosten)}`,
               `RND = GND − Alter = ${s.garage.gnd} − ${garageAlter} = ${garageRnd} Jahre (ohne Modernisierungsmodell)`,
-              `AWM = (${s.garage.gnd} − ${garageRnd}) × 100 / ${s.garage.gnd} = ${pct(garageAwm.prozent)} → Abzug ${eur(garageAwm.betrag)}`,
-              `Sachwert Garage = ${eur(garageHk.herstellungskosten)} − ${eur(garageAwm.betrag)} = ${eur(garageAwm.restwert)}`,
+              `AWM = (GND − RND) × 100 / GND = (${s.garage.gnd} − ${garageRnd}) × 100 / ${s.garage.gnd} = ${pct(garageAwm.prozent)} → Abzug ${eur(garageAwm.betrag)}`,
+              `Sachwert Garage = Herstellungskosten − Abzug = ${eur(garageHk.herstellungskosten)} − ${eur(garageAwm.betrag)} = ${eur(garageAwm.restwert)}`,
             ]}
           />
         {/if}
@@ -450,10 +464,10 @@
         />
         <Formel
           zeilen={[
-            `Sachwert bauliche Anlagen = ${eur(hausAwm.restwert)}${s.garage.aktiv ? ` + ${eur(garageAwm.restwert)}` : ""} = ${eur(kette.bauwerkeNachAwm)}`,
-            `Außenanlagen = ${eur(kette.bauwerkeNachAwm)} × ${pct(s.aussenanlagenProzent)} = ${eur(kette.aussenanlagenBetrag)}`,
-            `Bauliche Anlagen inkl. Außenanlagen = ${eur(kette.bauwerkeInklAussenanlagen)}`,
-            `Vorläufiger Sachwert = ${eur(kette.bauwerkeInklAussenanlagen)} + Bodenwert ${eur(bw)} = ${eur(kette.vorlaeufigerSachwert)}`,
+            `Sachwert bauliche Anlagen = Hauptgebäude${s.garage.aktiv ? " + Garage" : ""} = ${eur(hausAwm.restwert)}${s.garage.aktiv ? ` + ${eur(garageAwm.restwert)}` : ""} = ${eur(kette.bauwerkeNachAwm)}`,
+            `Außenanlagen = Sachwert bauliche Anlagen × Pauschale = ${eur(kette.bauwerkeNachAwm)} × ${pct(s.aussenanlagenProzent)} = ${eur(kette.aussenanlagenBetrag)}`,
+            `Bauliche Anlagen inkl. Außenanlagen = ${eur(kette.bauwerkeNachAwm)} + ${eur(kette.aussenanlagenBetrag)} = ${eur(kette.bauwerkeInklAussenanlagen)}`,
+            `Vorläufiger Sachwert = bauliche Anlagen inkl. Außenanlagen + Bodenwert = ${eur(kette.bauwerkeInklAussenanlagen)} + ${eur(bw)} = ${eur(kette.vorlaeufigerSachwert)}`,
           ]}
         />
       </Abschnitt>
@@ -469,8 +483,8 @@
         />
         <Formel
           zeilen={[
-            `Marktangepasster Sachwert = ${eur(kette.vorlaeufigerSachwert)} × ${num(s.sachwertfaktor)} = ${eur(kette.marktangepassterSachwert)}`,
-            `Marktanpassung = ${eur(kette.marktanpassungBetrag)}`,
+            `Marktangepasster Sachwert = vorläufiger Sachwert × Sachwertfaktor = ${eur(kette.vorlaeufigerSachwert)} × ${num(s.sachwertfaktor)} = ${eur(kette.marktangepassterSachwert)}`,
+            `Marktanpassung = marktangepasster − vorläufiger Sachwert = ${eur(kette.marktanpassungBetrag)}`,
           ]}
         />
       </Abschnitt>
