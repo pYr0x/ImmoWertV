@@ -10,17 +10,72 @@ export interface Modernisierungselement {
   id: string;
   bezeichnung: string;
   maxPunkte: number;
+  /**
+   * Nicht-amtliche Erläuterung: beschreibt, welche Maßnahmen das jeweilige Element
+   * üblicherweise umfasst. Die ImmoWertV (Anlage 2) definiert hierzu KEINE Einzeltexte
+   * oder punktgenauen Kriterien – die Punktvergabe erfolgt nach sachverständiger
+   * Einschätzung. Diese Texte sind eine Orientierungshilfe, kein amtlicher Wortlaut.
+   */
+  erlaeuterung: string;
 }
 
 export const MODERNISIERUNGSELEMENTE: Modernisierungselement[] = [
-  { id: "dach", bezeichnung: "Dacherneuerung inklusive Verbesserung der Wärmedämmung", maxPunkte: 4 },
-  { id: "fenster", bezeichnung: "Modernisierung der Fenster und Außentüren", maxPunkte: 2 },
-  { id: "leitungen", bezeichnung: "Modernisierung der Leitungssysteme (Strom, Gas, Wasser, Abwasser)", maxPunkte: 2 },
-  { id: "heizung", bezeichnung: "Modernisierung der Heizungsanlage", maxPunkte: 2 },
-  { id: "waermedaemmung", bezeichnung: "Wärmedämmung der Außenwände", maxPunkte: 4 },
-  { id: "baeder", bezeichnung: "Modernisierung von Bädern", maxPunkte: 2 },
-  { id: "innenausbau", bezeichnung: "Modernisierung des Innenausbaus, z. B. Decken, Fußböden, Treppen", maxPunkte: 2 },
-  { id: "grundriss", bezeichnung: "Wesentliche Verbesserung der Grundrissgestaltung", maxPunkte: 2 },
+  {
+    id: "dach",
+    bezeichnung: "Dacherneuerung inklusive Verbesserung der Wärmedämmung",
+    maxPunkte: 4,
+    erlaeuterung:
+      "Erneuerung der Dacheindeckung einschließlich erforderlicher Unterkonstruktion sowie Dämmung der obersten Geschossdecke bzw. der Dachschrägen. Eine höhere Punktzahl kommt bei vollständiger Erneuerung mit zeitgemäßem Dämmstandard in Betracht.",
+  },
+  {
+    id: "fenster",
+    bezeichnung: "Modernisierung der Fenster und Außentüren",
+    maxPunkte: 2,
+    erlaeuterung:
+      "Austausch der Fenster und Außentüren gegen wärmeschutzverglaste Elemente (z. B. Mehrscheiben-Isolierverglasung) mit gedämmten Rahmen.",
+  },
+  {
+    id: "leitungen",
+    bezeichnung: "Modernisierung der Leitungssysteme (Strom, Gas, Wasser, Abwasser)",
+    maxPunkte: 2,
+    erlaeuterung:
+      "Erneuerung der Elektro-, Gas-, Wasser- und Abwasserleitungen entsprechend den heutigen technischen Anforderungen.",
+  },
+  {
+    id: "heizung",
+    bezeichnung: "Modernisierung der Heizungsanlage",
+    maxPunkte: 2,
+    erlaeuterung:
+      "Erneuerung der Heizungsanlage (Wärmeerzeuger und Verteilung) auf einen zeitgemäßen, energieeffizienten Stand.",
+  },
+  {
+    id: "waermedaemmung",
+    bezeichnung: "Wärmedämmung der Außenwände",
+    maxPunkte: 4,
+    erlaeuterung:
+      "Nachträgliche Wärmedämmung der Außenwände, z. B. durch ein Wärmedämmverbundsystem. Eine höhere Punktzahl kommt bei umfassender Dämmung mit gutem Dämmstandard in Betracht.",
+  },
+  {
+    id: "baeder",
+    bezeichnung: "Modernisierung von Bädern",
+    maxPunkte: 2,
+    erlaeuterung:
+      "Modernisierung der Bäder mit zeitgemäßer Ausstattung, Fliesen und Sanitärobjekten.",
+  },
+  {
+    id: "innenausbau",
+    bezeichnung: "Modernisierung des Innenausbaus, z. B. Decken, Fußböden, Treppen",
+    maxPunkte: 2,
+    erlaeuterung:
+      "Erneuerung des Innenausbaus wie Decken, Fußböden, Innentüren und Treppen auf einen zeitgemäßen Stand.",
+  },
+  {
+    id: "grundriss",
+    bezeichnung: "Wesentliche Verbesserung der Grundrissgestaltung",
+    maxPunkte: 2,
+    erlaeuterung:
+      "Wesentliche Verbesserung der Grundrissgestaltung, etwa durch einen zeitgemäßen Zuschnitt und eine funktionalere Anordnung der Räume.",
+  },
 ];
 
 /** Tabelle 2: Modernisierungsgrad nach Gesamtpunktzahl (informativ für die Anzeige) */

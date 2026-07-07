@@ -288,6 +288,13 @@ export interface Kostengruppe {
   gewicht: number;
   /** Beschreibungstexte je Standardstufe (Index 0 = Stufe 1 … 4 = Stufe 5), null = Stufe nicht definiert */
   beschreibungen: [string | null, string | null, string | null, string | null, string | null];
+  /**
+   * Optionale, NICHT-amtliche Konkretisierungen je Standardstufe (Index 0 = Stufe 1 … 4 = Stufe 5).
+   * Diese Texte stammen nicht aus der ImmoWertV, sondern sind ergänzende Einordnungshilfen
+   * (typische Bauweisen, Größenordnungen von U-Werten, Baujahrsbezüge) auf Basis von NHK 2010 /
+   * Sachwertrichtlinie und einschlägiger Bewertungspraxis. In der UI farblich abgesetzt.
+   */
+  erweiterungen?: [string | null, string | null, string | null, string | null, string | null];
 }
 
 /**
@@ -306,6 +313,13 @@ export const KOSTENGRUPPEN_WOHNHAUS: Kostengruppe[] = [
       "Verblendmauerwerk, zweischalig, hinterlüftet, Vorhangfassade (z. B. Naturschiefer); Wärmedämmung (nach ca. 2005)",
       "aufwendig gestaltete Fassaden mit konstruktiver Gliederung (Säulenstellungen, Erker etc.), Sichtbeton-Fertigteile, Natursteinfassade, Elemente aus Kupfer-/Eloxalblech, mehrgeschossige Glasfassaden; Dämmung im Passivhausstandard",
     ],
+    erweiterungen: [
+      "Typisch massive Vollziegel-/Bruchsteinwände (24–38 cm) ohne Dämmung; U-Wert grob 1,4–2,0 W/(m²·K). Bestand bis ca. Baujahr 1978.",
+      "Zweischaliges Mauerwerk mit Luftschicht oder erste dünne Kerndämmung (2–5 cm); U-Wert ~0,8–1,2 W/(m²·K). Bauweise 1980er / frühe 1990er (WSchVO 1984).",
+      "WDVS mit ~6–12 cm Dämmung bzw. monolithischer Leichtziegel; U-Wert ~0,3–0,5 W/(m²·K). Niveau WSchVO 1995 / EnEV 2002.",
+      "16–20 cm Dämmung, vorgehängte hinterlüftete Fassade (VHF); U-Wert ~0,20–0,25 W/(m²·K). Niveau EnEV 2009/2014 bzw. KfW-Effizienzhaus.",
+      "Passivhaus-Dämmung ≥ 24 cm, U-Wert ≤ 0,15 W/(m²·K); Sonderfassaden (Naturstein, Metall, Structural Glazing) mit hohem architektonischem Anspruch.",
+    ],
   },
   {
     id: "dach",
@@ -317,6 +331,13 @@ export const KOSTENGRUPPEN_WOHNHAUS: Kostengruppe[] = [
       "Faserzement-Schindeln, beschichtete Betondachsteine und Tondachziegel, Folienabdichtung; Rinnen und Fallrohre aus Zinkblech; Dachdämmung (nach ca. 1995)",
       "glasierte Tondachziegel, Flachdachausbildung tlw. als Dachterrassen; Konstruktion in Brettschichtholz, schweres Massivflachdach; besondere Dachformen, z. B. Mansarden-, Walmdach; Aufsparrendämmung, überdurchschnittliche Dämmung (nach ca. 2005)",
       "hochwertige Eindeckung z. B. aus Schiefer oder Kupfer, Dachbegrünung, befahrbares Flachdach; aufwendig gegliederte Dachlandschaft, sichtbare Bogendachkonstruktionen; Rinnen und Fallrohre aus Kupfer; Dämmung im Passivhausstandard",
+    ],
+    erweiterungen: [
+      "Ungedämmter Dachstuhl / kaltes Dach; U-Wert der Dachfläche grob > 1,0 W/(m²·K). Häufig unausgebautes Dachgeschoss.",
+      "Zwischensparrendämmung ~8–12 cm (vor ca. 1995); U-Wert ~0,4–0,6 W/(m²·K).",
+      "Zwischensparrendämmung ~14–18 cm, Unterspannbahn; U-Wert ~0,24–0,30 W/(m²·K). Niveau EnEV.",
+      "Auf-/Zwischensparrendämmung ~20–26 cm; U-Wert ~0,16–0,20 W/(m²·K). Gauben, Dachterrassen.",
+      "Dämmung ≥ 30 cm bzw. Passivhausniveau, U-Wert ≤ 0,12 W/(m²·K); begrüntes oder befahrbares Flachdach, aufwendige Dachlandschaft.",
     ],
   },
   {
@@ -330,6 +351,13 @@ export const KOSTENGRUPPEN_WOHNHAUS: Kostengruppe[] = [
       "Dreifachverglasung, Sonnenschutzglas, aufwendigere Rahmen, Rollläden (elektr.); höherwertige Türanlage z. B. mit Seitenteil, besonderer Einbruchschutz",
       "große, feststehende Fensterflächen, Spezialverglasung (Schall- und Sonnenschutz); Außentüren in hochwertigen Materialien",
     ],
+    erweiterungen: [
+      "Holzfenster mit Einfachglas, Ug ~5,0–5,8 W/(m²·K); oft noch Original-Kastenfenster.",
+      "Isolierverglasung (2-Scheiben, unbeschichtet), Ug ~2,8–3,0 W/(m²·K); Rahmen Holz oder frühes Kunststoff.",
+      "Wärmeschutzverglasung (2-Scheiben, beschichtet), Uw ~1,3–1,6 W/(m²·K). Standard nach ca. 1995.",
+      "3-Scheiben-Wärmeschutzglas, Uw ~0,9–1,1 W/(m²·K); gedämmte Rahmen, RC2-Einbruchschutz.",
+      "Fassaden-/Festverglasung mit Uw ≤ 0,8 W/(m²·K), Schall-/Sonnenschutzglas; Haustür mit Motorschloss/Sicherheitsklasse.",
+    ],
   },
   {
     id: "innenwaende",
@@ -341,6 +369,13 @@ export const KOSTENGRUPPEN_WOHNHAUS: Kostengruppe[] = [
       "nicht tragende Innenwände in massiver Ausführung bzw. mit Dämmmaterial gefüllte Ständerkonstruktionen; schwere Türen, Holzzargen",
       "Sichtmauerwerk, Wandvertäfelungen (Holzpaneele); Massivholztüren, Schiebetürelemente, Glastüren, strukturierte Türblätter",
       "gestaltete Wandabläufe (z. B. Pfeilervorlagen, abgesetzte oder geschwungene Wandpartien); Vertäfelungen (Edelholz, Metall), Akustikputz, Brandschutzverkleidung; raumhohe aufwendige Türelemente",
+    ],
+    erweiterungen: [
+      "Einfachste Türen ohne Dichtung; Wände in Lehm-/Kalkputz. Kaum Schallschutz zwischen Räumen.",
+      "Gipskarton-Ständerwände (einfach beplankt) oder Gipsdielen; Türen mit Stahlzarge, glattes Türblatt.",
+      "Massive Trennwände bzw. doppelt beplankte GK-Wände mit Dämmung; schwere Türblätter, Holzzarge.",
+      "Sichtmauerwerk, Holzvertäfelung; Massivholz-/Glastüren, Schiebeelemente, strukturierte Türblätter.",
+      "Architektonisch gestaltete Wandführung, Edelholz-/Metallvertäfelung, Akustikputz; raumhohe, aufwendige Türanlagen.",
     ],
   },
   {
@@ -354,6 +389,13 @@ export const KOSTENGRUPPEN_WOHNHAUS: Kostengruppe[] = [
       "Decken mit größerer Spannweite, Deckenverkleidung (Holzpaneele/Kassetten); gewendelte Treppen aus Stahlbeton oder Stahl, Hartholztreppenanlage in besserer Art und Ausführung",
       "Decken mit großen Spannweiten, gegliedert, Deckenvertäfelungen (Edelholz, Metall); breite Stahlbeton-, Metall- oder Hartholztreppenanlage mit hochwertigem Geländer",
     ],
+    erweiterungen: [
+      "Holzbalkendecke ohne Füllung, unterseitig Spalierputz; einfache Weichholztreppe, kein Trittschallschutz.",
+      "Holzbalkendecke mit Einschub/Füllung oder Kappendecke; Stahl-/Hartholztreppe einfacher Art.",
+      "Stahlbetondecke mit schwimmendem Estrich (Tritt-/Luftschallschutz); geradläufige Stahlbeton-/Stahltreppe.",
+      "Deckenverkleidung/Paneele, größere Spannweite; gewendelte Stahlbeton-/Stahltreppe, hochwertige Hartholztreppe.",
+      "Weit gespannte, gegliederte Decken mit Edelholz-/Metallvertäfelung; breite Treppenanlage mit hochwertigem Geländer.",
+    ],
   },
   {
     id: "fussboeden",
@@ -365,6 +407,13 @@ export const KOSTENGRUPPEN_WOHNHAUS: Kostengruppe[] = [
       "Linoleum-, Teppich-, Laminat- und PVC-Böden besserer Art und Ausführung, Fliesen, Kunststeinplatten",
       "Natursteinplatten, Fertigparkett, hochwertige Fliesen, Terrazzobelag, hochwertige Massivholzböden auf gedämmter Unterkonstruktion",
       "hochwertiges Parkett, hochwertige Natursteinplatten, hochwertige Edelholzböden auf gedämmter Unterkonstruktion",
+    ],
+    erweiterungen: [
+      "Roher Estrich/Dielung ohne Nutzbelag.",
+      "Einfaches Laminat, Nadelfilz/Teppich, PVC-Bahnenware; Standardfliesen in Nassräumen.",
+      "Bessere Laminat-/Kork-/PVC-Designbeläge, keramische Fliesen, Kunststeinplatten.",
+      "Mehrschicht-Fertigparkett, hochwertige Feinsteinzeug-/Natursteinfliesen, Terrazzo auf gedämmtem Unterbau.",
+      "Massiv-Stabparkett/Edelholz, großformatige Natursteinplatten; oft mit Fußbodenheizung kombiniert.",
     ],
   },
   {
@@ -378,6 +427,13 @@ export const KOSTENGRUPPEN_WOHNHAUS: Kostengruppe[] = [
       "1 bis 2 Bäder mit tlw. zwei Waschbecken, tlw. Bidet/Urinal, Gäste-WC, bodengleiche Dusche; Wand- und Bodenfliesen; jeweils in gehobener Qualität",
       "mehrere großzügige, hochwertige Bäder, Gäste-WC; hochwertige Wand- und Bodenplatten (oberflächenstrukturiert, Einzel- und Flächendekors)",
     ],
+    erweiterungen: [
+      "Ein Bad mit Stand-WC, Aufputz-Installation; kein oder nur teilweiser Fliesenspiegel.",
+      "Ein Bad (Wanne oder Dusche) + WC; Teilfliesung, Standard-Sanitärobjekte.",
+      "Vollständig gefliestes Bad mit Wanne und Dusche, zusätzlich Gäste-WC.",
+      "1–2 Bäder gehobener Qualität (Doppelwaschtisch, bodengleiche Dusche, Bidet); Markenobjekte.",
+      "Mehrere großzügige Bäder mit hochwertigen Objekten (freistehende Wanne, Regendusche), Wellness-Ausstattung.",
+    ],
   },
   {
     id: "heizung",
@@ -390,6 +446,13 @@ export const KOSTENGRUPPEN_WOHNHAUS: Kostengruppe[] = [
       "Fußbodenheizung, Solarkollektoren für Warmwassererzeugung, zusätzlicher Kaminanschluss",
       "Solarkollektoren für Warmwassererzeugung und Heizung, Blockheizkraftwerk, Wärmepumpe, Hybrid-Systeme; aufwendige zusätzliche Kaminanlage",
     ],
+    erweiterungen: [
+      "Einzelöfen (Kohle/Öl) bzw. Schwerkraftheizung ohne Umwälzpumpe; keine zentrale Warmwasserbereitung.",
+      "Zentralheizung mit Standard-/Konstanttemperaturkessel (vor ca. 1995), Nachtspeicher oder Gasetagenheizung.",
+      "Gas-/Öl-Brennwertkessel oder Fernwärme, elektronisch geregelt; Warmwasserspeicher.",
+      "Flächenheizung (Fußboden), Solarthermie für Warmwasser; ergänzender Kaminofen.",
+      "Wärmepumpe/BHKW/Hybridsystem, Solarthermie für Heizung + Warmwasser; ggf. PV-Kopplung. Niveau GEG/EE-Anforderung.",
+    ],
   },
   {
     id: "technik",
@@ -401,6 +464,13 @@ export const KOSTENGRUPPEN_WOHNHAUS: Kostengruppe[] = [
       "zeitgemäße Anzahl an Steckdosen und Lichtauslässen, Zählerschrank (ab ca. 1985) mit Unterverteilung und Kippsicherungen",
       "zahlreiche Steckdosen und Lichtauslässe, hochwertige Abdeckungen, dezentrale Lüftung mit Wärmetauscher, mehrere LAN- und Fernsehanschlüsse",
       "Video- und zentrale Alarmanlage, zentrale Lüftung mit Wärmetauscher, Klimaanlage, Bussystem",
+    ],
+    erweiterungen: [
+      "Wenige Steckdosen/Schalter, kein FI-Schutzschalter, Leitungen teils auf Putz; Schmelzsicherungen.",
+      "Geringe Steckdosendichte, Zählerschrank älterer Bauart; einfache Elektroinstallation.",
+      "Zeitgemäße Steckdosen-/Lichtauslassdichte, moderner Zählerschrank mit FI/LS und Unterverteilung.",
+      "Hochwertige Schalterprogramme, dezentrale Lüftung mit WRG, strukturierte Verkabelung (LAN/TV), Ladepunkt-Vorbereitung.",
+      "KNX-/Bussystem, zentrale Lüftungsanlage mit WRG, Alarm-/Videotechnik, Smart-Home-Vollausstattung.",
     ],
   },
 ];
