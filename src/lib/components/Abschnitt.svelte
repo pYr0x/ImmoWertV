@@ -15,7 +15,7 @@
   } = $props();
 </script>
 
-<Card.Root class="print:break-inside-avoid print:border-0 print:shadow-none">
+<Card.Root class="app-section print:break-inside-avoid print:border-0 print:shadow-none">
   <Card.Header>
     <Card.Title class="flex items-baseline justify-between gap-2">
       <span>{titel}</span>

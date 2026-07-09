@@ -23,6 +23,9 @@ describe("App", () => {
     // Default: DHH Typ 2.01 ist vorausgewählt
     const select = document.getElementById("haus-typ") as HTMLSelectElement;
     expect(select.value).toBe("2.01");
+    expect(document.querySelector('[aria-label="Bezeichnung der Geschossebene 1"]')).not.toBeNull();
+    expect(document.querySelector('[aria-label*="Anteil der Standardstufe 1"]')).not.toBeNull();
+    expect(document.querySelector("button.h-6")).not.toBeNull();
 
     unmount(app);
   });

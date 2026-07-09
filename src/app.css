@@ -122,6 +122,12 @@
   }
 }
 
+/* Defer style and layout work for calculation sections outside the viewport. */
+.app-section {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 500px;
+}
+
 /* Druckausgabe: Rechenkette als sauberes Dokument */
 @media print {
   @page {

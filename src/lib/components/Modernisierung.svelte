@@ -13,6 +13,10 @@
   const summe = $derived(
     MODERNISIERUNGSELEMENTE.reduce((s, e) => s + (punkte[e.id] ?? 0), 0)
   );
+  let erklaerungenOffen = $state<Record<string, boolean>>(
+    Object.fromEntries(MODERNISIERUNGSELEMENTE.map((element) => [element.id, false]))
+  );
+  let amtlicheHinweiseOffen = $state(false);
 
   function schritt(id: string, max: number, delta: number) {
     const aktuell = punkte[id] ?? 0;
@@ -50,18 +54,20 @@
           </Button>
         </div>
       </div>
-      <Collapsible.Root>
+      <Collapsible.Root bind:open={erklaerungenOffen[element.id]}>
         <Collapsible.Trigger
           class="text-amber-700 hover:text-amber-800 dark:text-amber-500 dark:hover:text-amber-400 no-print inline-flex items-center gap-1 text-xs"
         >
           <ChevronDown class="size-3" /> Erläuterung (nicht amtlich)
         </Collapsible.Trigger>
         <Collapsible.Content>
-          <p
-            class="mt-1 rounded border-l-2 border-amber-400 bg-amber-50 px-2 py-1 text-xs text-amber-900 dark:border-amber-600 dark:bg-amber-950/40 dark:text-amber-200"
-          >
-            {element.erlaeuterung}
-          </p>
+          {#if erklaerungenOffen[element.id]}
+            <p
+              class="mt-1 rounded border-l-2 border-amber-400 bg-amber-50 px-2 py-1 text-xs text-amber-900 dark:border-amber-600 dark:bg-amber-950/40 dark:text-amber-200"
+            >
+              {element.erlaeuterung}
+            </p>
+          {/if}
         </Collapsible.Content>
       </Collapsible.Root>
     </div>
@@ -73,14 +79,14 @@
   <p class="text-muted-foreground text-xs">
     Modernisierungsgrad nach Tabelle 2: <span class="font-medium">{modernisierungsgrad(summe)}</span>
   </p>
-  <Collapsible.Root>
+  <Collapsible.Root bind:open={amtlicheHinweiseOffen}>
     <Collapsible.Trigger
       class="text-muted-foreground hover:text-foreground no-print inline-flex items-center gap-1 text-xs"
     >
       <ChevronDown class="size-3" /> Amtliche Hinweise zur Punktevergabe (Anlage 2 Abschnitt I)
     </Collapsible.Trigger>
     <Collapsible.Content>
-      <ul class="text-muted-foreground mt-1 list-disc space-y-1 pl-4 text-xs">
+      {#if amtlicheHinweiseOffen}<ul class="text-muted-foreground mt-1 list-disc space-y-1 pl-4 text-xs">
         <li>
           Punkte sind für die zum Stichtag oder kurz vor dem Stichtag durchgeführten
           Modernisierungsmaßnahmen zu vergeben. Liegen die Maßnahmen weiter zurück, ist zu prüfen,
@@ -102,6 +108,7 @@
         </li>
         <li>Das Punktemodell ersetzt nicht die sachverständige Würdigung des Einzelfalls.</li>
       </ul>
+      {/if}
     </Collapsible.Content>
   </Collapsible.Root>
 </div>

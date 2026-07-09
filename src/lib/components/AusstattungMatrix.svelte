@@ -39,6 +39,8 @@
   }
 
   const gewichtSumme = $derived(kostengruppen.reduce((s, kg) => s + (gewichte[kg.id] ?? kg.gewicht), 0));
+  let offeneBeschreibungen = $state<Record<string, boolean>>({});
+  let referenzOffen = $state(false);
 </script>
 
 <div class="overflow-x-auto">
@@ -68,34 +70,39 @@
           <td class="py-2 pr-2">
             <div class="font-medium">{kg.name}</div>
             {#if kg.beschreibungen.some((b) => b) || kg.erweiterungen?.some((b) => b)}
-              <Collapsible.Root>
+              <Collapsible.Root
+                open={offeneBeschreibungen[kg.id] ?? false}
+                onOpenChange={(open) => (offeneBeschreibungen[kg.id] = open)}
+              >
                 <Collapsible.Trigger
                   class="text-muted-foreground hover:text-foreground no-print inline-flex items-center gap-1 text-xs"
                 >
                   <ChevronDown class="size-3" /> Stufenbeschreibungen
                 </Collapsible.Trigger>
                 <Collapsible.Content>
-                  <dl class="text-muted-foreground mt-1 max-w-xl space-y-1 text-xs">
-                    {#each kg.beschreibungen as beschreibung, stufe (stufe)}
-                      {@const erg = kg.erweiterungen?.[stufe]}
-                      {#if beschreibung || erg}
-                        <div>
-                          <dt class="inline font-semibold">Stufe {stufe + 1}:</dt>
-                          {#if beschreibung}<dd class="inline">{beschreibung}</dd>{/if}
-                          {#if erg}
-                            <dd class="mt-0.5 block text-sky-700 dark:text-sky-400">
-                              <span class="font-medium">↳ Ergänzung:</span> {erg}
-                            </dd>
-                          {/if}
-                        </div>
-                      {/if}
-                    {/each}
-                  </dl>
-                  {#if kg.erweiterungen?.some((b) => b)}
-                    <p class="text-sky-700/80 dark:text-sky-400/80 mt-1 max-w-xl text-[11px] italic">
-                      Blau markierte „Ergänzungen“ stammen nicht aus der ImmoWertV, sondern sind
-                      ergänzende Einordnungshilfen (NHK 2010 / Sachwertrichtlinie, Bewertungspraxis).
-                    </p>
+                  {#if offeneBeschreibungen[kg.id]}
+                    <dl class="text-muted-foreground mt-1 max-w-xl space-y-1 text-xs">
+                      {#each kg.beschreibungen as beschreibung, stufe (stufe)}
+                        {@const erg = kg.erweiterungen?.[stufe]}
+                        {#if beschreibung || erg}
+                          <div>
+                            <dt class="inline font-semibold">Stufe {stufe + 1}:</dt>
+                            {#if beschreibung}<dd class="inline">{beschreibung}</dd>{/if}
+                            {#if erg}
+                              <dd class="mt-0.5 block text-sky-700 dark:text-sky-400">
+                                <span class="font-medium">↳ Ergänzung:</span> {erg}
+                              </dd>
+                            {/if}
+                          </div>
+                        {/if}
+                      {/each}
+                    </dl>
+                    {#if kg.erweiterungen?.some((b) => b)}
+                      <p class="text-sky-700/80 dark:text-sky-400/80 mt-1 max-w-xl text-[11px] italic">
+                        Blau markierte „Ergänzungen“ stammen nicht aus der ImmoWertV, sondern sind
+                        ergänzende Einordnungshilfen (NHK 2010 / Sachwertrichtlinie, Bewertungspraxis).
+                      </p>
+                    {/if}
                   {/if}
                 </Collapsible.Content>
               </Collapsible.Root>
@@ -108,6 +115,7 @@
               min={0}
               max={100}
               bind:value={gewichte[kg.id]}
+              aria-label={`Wägungsanteil der Kostengruppe ${kg.name} in Prozent`}
               class="h-8 w-16 px-1 text-right text-xs"
             />
           </td>
@@ -120,12 +128,13 @@
                   min={0}
                   max={100}
                   bind:value={ausstattung[kg.id]![stufe]}
+                  aria-label={`Anteil der Standardstufe ${stufe + 1} für ${kg.name} in Prozent`}
                   class="h-8 w-16 px-1 text-right text-xs"
                 />
                 <Button
                   variant="ghost"
                   size="sm"
-                  class="no-print text-muted-foreground h-5 px-1 text-[10px]"
+                  class="no-print text-muted-foreground h-6 px-1 text-[10px]"
                   onclick={() => setzeVoll(kg.id, stufe)}
                 >
                   100 %
@@ -143,14 +152,14 @@
 </div>
 
 {#if referenz}
-  <Collapsible.Root>
+  <Collapsible.Root bind:open={referenzOffen}>
     <Collapsible.Trigger
       class="text-muted-foreground hover:text-foreground no-print inline-flex items-center gap-1 text-xs"
     >
       <ChevronDown class="size-3" /> Amtliche Standardbeschreibungen: {referenz.titel}
     </Collapsible.Trigger>
     <Collapsible.Content>
-      <div class="mt-2 space-y-3 rounded-md border p-3">
+      {#if referenzOffen}<div class="mt-2 space-y-3 rounded-md border p-3">
         <p class="text-muted-foreground text-xs">
           Einstufungshilfe nach Anlage 4 Abschnitt III ImmoWertV (amtliche Beschreibung der
           Gebäudestandards, Stufen 3–5). Die Merkmale sind sachverständig zu einem Gesamtstandard
@@ -170,6 +179,7 @@
           </div>
         {/each}
       </div>
+      {/if}
     </Collapsible.Content>
   </Collapsible.Root>
 {/if}

@@ -25,8 +25,21 @@
 <div class="space-y-2">
   {#each geschosse as geschoss, i (i)}
     <div class="flex items-center gap-2">
-      <Input type="text" bind:value={geschoss.name} placeholder="Geschossebene" class="max-w-56" />
-      <Input type="number" step="any" min={0} bind:value={geschoss.flaeche} class="max-w-32 text-right" />
+      <Input
+        type="text"
+        bind:value={geschoss.name}
+        placeholder="Geschossebene"
+        aria-label={`Bezeichnung der Geschossebene ${i + 1}`}
+        class="max-w-56"
+      />
+      <Input
+        type="number"
+        step="any"
+        min={0}
+        bind:value={geschoss.flaeche}
+        aria-label={`Brutto-Grundfläche der Geschossebene ${i + 1} in Quadratmetern`}
+        class="max-w-32 text-right"
+      />
       <span class="text-muted-foreground text-sm">m²</span>
       <Button variant="ghost" size="icon" class="no-print" onclick={() => entfernen(i)} aria-label="Ebene entfernen">
         <Trash2 class="size-4" />

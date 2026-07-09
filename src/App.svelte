@@ -174,7 +174,14 @@
       <Button variant="outline" size="sm" onclick={() => importInput?.click()}>
         <Upload class="size-4" /> Import
       </Button>
-      <input type="file" accept=".json,application/json" class="hidden" bind:this={importInput} onchange={importieren} />
+      <input
+        type="file"
+        accept=".json,application/json"
+        class="hidden"
+        aria-label="Bewertung aus JSON-Datei importieren"
+        bind:this={importInput}
+        onchange={importieren}
+      />
       <Button variant="outline" size="sm" onclick={() => window.print()}><Printer class="size-4" /> Drucken</Button>
       <Button variant="ghost" size="sm" onclick={zuruecksetzen}><RotateCcw class="size-4" /> Zurücksetzen</Button>
     </div>
@@ -500,8 +507,22 @@
         <div class="space-y-2">
           {#each s.merkmale as merkmal, i (i)}
             <div class="flex items-center gap-2">
-              <Input type="text" bind:value={merkmal.bezeichnung} placeholder="z. B. Reparaturstau Dach" class="max-w-72" />
-              <Input type="number" step="any" bind:value={merkmal.betrag} class="max-w-36 text-right" />
+              <Input
+                id={`merkmal-${i}-bezeichnung`}
+                type="text"
+                bind:value={merkmal.bezeichnung}
+                placeholder="z. B. Reparaturstau Dach"
+                aria-label={`Bezeichnung des besonderen Merkmals ${i + 1}`}
+                class="max-w-72"
+              />
+              <Input
+                id={`merkmal-${i}-betrag`}
+                type="number"
+                step="any"
+                bind:value={merkmal.betrag}
+                aria-label={`Betrag des besonderen Merkmals ${i + 1} in Euro`}
+                class="max-w-36 text-right"
+              />
               <span class="text-muted-foreground text-sm">€</span>
               <Button variant="ghost" size="sm" class="no-print" onclick={() => s.merkmale.splice(i, 1)}>Entfernen</Button>
             </div>
