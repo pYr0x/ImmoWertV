@@ -5,6 +5,8 @@ Private Web-App zur Verkehrswertermittlung einer Wohnimmobilie nach dem
 Jede Eingabeänderung aktualisiert das Ergebnis sofort; jeder Rechenschritt
 wird mit Formel und eingesetzten Zahlen angezeigt.
 
+**Demo:** https://immowertv.black-thunder.workers.dev/
+
 ## Funktionsumfang
 
 - Komplette Rechenkette: Bodenwert → NHK 2010 (gewichteter Kostenkennwert über
@@ -23,7 +25,7 @@ wird mit Formel und eingesetzten Zahlen angezeigt.
 ```bash
 pnpm install
 pnpm dev        # Entwicklungsserver
-pnpm test       # Vitest — reproduziert u. a. das Muster-Gutachten exakt
+pnpm test       # Vitest — reproduziert u. a. ein Muster-Gutachten
 pnpm check      # svelte-check (TypeScript)
 pnpm build      # Produktions-Build nach dist/
 ```
@@ -31,17 +33,11 @@ pnpm build      # Produktions-Build nach dist/
 Stack: Vite + Svelte 5 + TypeScript + Tailwind CSS 4 + shadcn-svelte
 (siehe `docs/adr/0001-svelte5-shadcn-svelte.md`).
 
-## Deployment (Cloudflare)
-
-1. Repo zu GitHub pushen.
-2. Cloudflare-Dashboard → *Workers & Pages* → *Create* → *Connect to Git*.
-3. Build-Command `pnpm build` (oder `npm run build`), Output-Verzeichnis `dist`.
-4. Jeder Push deployt automatisch.
-
 ## Hinweise
 
 - Eigennutzung, keine Rechtsberatung/kein Gutachten.
 - Datenbasis: ImmoWertV vom 14.07.2021, Anlagen 1, 2 und 4
   (gesetze-im-internet.de). Bodenrichtwert, Sachwertfaktor und Baupreisindex
-  werden manuell eingetragen (BORIS, Grundstücksmarktbericht, Destatis).
+  (Destatis, Basisjahr 2021 = 100) werden manuell eingetragen (BORIS,
+  Grundstücksmarktbericht, Destatis).
 - Alle Eingaben bleiben lokal im Browser (localStorage); es gibt kein Backend.

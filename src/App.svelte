@@ -164,7 +164,7 @@
 <div class="mx-auto max-w-7xl px-4 py-6">
   <header class="mb-6 flex flex-wrap items-center justify-between gap-3">
     <div>
-      <h1 class="text-2xl font-bold">ImmoWert</h1>
+      <h1 class="text-2xl font-bold">ImmoWertV</h1>
       <p class="text-muted-foreground text-sm">
         Verkehrswertermittlung nach dem Sachwertverfahren (§§ 35–39 ImmoWertV)
       </p>
