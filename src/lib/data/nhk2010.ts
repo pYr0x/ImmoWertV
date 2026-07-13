@@ -476,10 +476,13 @@ export const KOSTENGRUPPEN_WOHNHAUS: Kostengruppe[] = [
 ];
 
 /**
- * Kostengruppen für Garagen — Beschreibungstexte amtlich (Anlage 4 Abschnitt III Nr. 8,
- * nur Stufen 3–5). ACHTUNG: Die Anlage 4 enthält für Garagen KEINE amtlichen
- * Wägungsanteile; die folgenden Gewichte sind eine verbreitete Konvention aus
- * Bewertungssoftware (vgl. Muster-Gutachten) und in der App editierbar.
+ * Kostengruppen für Hoch-, Tief- und Nutzfahrzeuggaragen (14.2–14.4) — die
+ * Beschreibungstexte sind amtlich (Anlage 4 ImmoWertV, nur Stufen 3–5), gelten
+ * aber ausdrücklich für Parkbauten, NICHT für Einzelgaragen (dafür
+ * KOSTENGRUPPEN_EINZELGARAGE verwenden). ACHTUNG: Die Anlage 4 enthält für
+ * Garagen KEINE amtlichen Wägungsanteile; die folgenden Gewichte sind eine
+ * verbreitete Konvention aus Bewertungssoftware (vgl. Muster-Gutachten) und in
+ * der App editierbar.
  */
 export const KOSTENGRUPPEN_GARAGE: Kostengruppe[] = [
   {
@@ -487,30 +490,65 @@ export const KOSTENGRUPPEN_GARAGE: Kostengruppe[] = [
     name: "Außenwände",
     gewicht: 23,
     beschreibungen: [null, null, "offene Konstruktion", "Einschalige Konstruktion", "aufwendig gestaltete Fassaden mit konstruktiver Gliederung (Säulenstellungen, Erker etc.)"],
+    erweiterungen: [
+      null,
+      null,
+      "Offene Parkebenen ohne geschlossene Fassade (typisches offenes Parkhaus).",
+      "Geschlossene Wand aus nur einer Schicht — keine zweite Schale, keine Dämmung.",
+      "Architektonisch aufwendige Parkhausfassade (Gliederung, Säulen, Erker).",
+    ],
   },
   {
     id: "konstruktion",
     name: "Konstruktion",
     gewicht: 23,
     beschreibungen: [null, null, "Stahl- und Betonfertigteile", "überwiegend Betonfertigteile; große stützenfreie Spannweiten", "größere stützenfreie Spannweiten"],
+    erweiterungen: [
+      null,
+      null,
+      "Standard-Skelettbau aus Stahl-/Betonfertigteilen mit Stützenraster.",
+      "Weitgespannte Fertigteildecken, wenige Stützen zwischen den Stellplätzen.",
+      "Besonders große stützenfreie Spannweiten (aufwendige Tragkonstruktion).",
+    ],
   },
   {
     id: "dach",
     name: "Dach",
     gewicht: 15,
     beschreibungen: [null, null, "Flachdach, Folienabdichtung", "Flachdachausbildung; Wärmedämmung", "befahrbares Flachdach (Parkdeck)"],
+    erweiterungen: [
+      null,
+      null,
+      "Einfaches Flachdach mit Kunststoff-Folienabdichtung.",
+      "Flachdach mit Wärmedämmung (z. B. über beheizten/genutzten Bereichen).",
+      "Befahrbares Dach als oberste offene Parkebene (Parkdeck).",
+    ],
   },
   {
     id: "fenster",
     name: "Fenster und Außentüren",
     gewicht: 11,
     beschreibungen: [null, null, "einfache Metallgitter", "begrünte Metallgitter, Glasbausteine", "Außentüren in hochwertigen Materialien"],
+    erweiterungen: [
+      null,
+      null,
+      "Offene Gitterfassaden aus Metall zur natürlichen Belüftung der Parkebenen.",
+      "Berankte/bepflanzte Gitterfassaden; Glasbaustein-Bänder für Tageslicht.",
+      "Hochwertige Tür-/Toranlagen (Metall, Glas) an Zufahrten und Treppenhäusern.",
+    ],
   },
   {
     id: "fussboeden",
     name: "Fußböden",
     gewicht: 18,
     beschreibungen: [null, null, "Beton", "Estrich, Gussasphalt", "beschichteter Beton oder Estrichboden"],
+    erweiterungen: [
+      null,
+      null,
+      "Roher Beton der Parkdecks ohne weiteren Belag.",
+      "Estrich- oder Gussasphaltbelag auf den Fahr-/Parkflächen.",
+      "Beschichtete Flächen (z. B. OS-8-Beschichtung) mit Markierungen.",
+    ],
   },
   {
     id: "technik",
@@ -522,6 +560,104 @@ export const KOSTENGRUPPEN_GARAGE: Kostengruppe[] = [
       "Strom- und Wasseranschluss; Löschwasseranlage; Treppenhaus; Brandmelder",
       "Sprinkleranlage; Rufanlagen; Rauch- und Wärmeabzugsanlagen; mechanische Be- und Entlüftungsanlagen; Parksysteme für zwei PKW übereinander; Personenaufzugsanlagen",
       "Video- und zentrale Alarmanlage; Beschallung; Parksysteme für drei oder mehr PKW übereinander; aufwendigere Aufzugsanlagen",
+    ],
+    erweiterungen: [
+      null,
+      null,
+      "Grundausstattung eines Parkbaus: Strom, Löschwasser, Brandmelder.",
+      "Gehobene Parkhaustechnik: Sprinkler, Entrauchung, mechanische Lüftung, Duplex-Parker, Aufzug.",
+      "Volltechnik: Video-/Alarmanlage, Beschallung, Mehrfach-Parksysteme, aufwendige Aufzüge.",
+    ],
+  },
+];
+
+/**
+ * Kostengruppen für Einzel-/Mehrfachgaragen (14.1). Die Anlage 4 ImmoWertV
+ * enthält für diese Gebäudeart WEDER Kostengruppen-Beschreibungen NOCH
+ * Wägungsanteile — amtlich ist nur die Fußnote (Stufe 3: Fertiggaragen;
+ * Stufe 4: Massivbauweise; Stufe 5: individuelle Massivgaragen mit besonderen
+ * Ausführungen wie Ziegeldach, Gründach, Fliesen, Wasser, Abwasser, Heizung).
+ * Die Texte hier sind daraus abgeleitete, NICHT-amtliche Einordnungshilfen
+ * (deshalb in `erweiterungen`, in der UI blau abgesetzt); die Gewichte sind
+ * dieselbe Software-Konvention wie bei KOSTENGRUPPEN_GARAGE und editierbar.
+ */
+export const KOSTENGRUPPEN_EINZELGARAGE: Kostengruppe[] = [
+  {
+    id: "aussenwaende",
+    name: "Außenwände",
+    gewicht: 23,
+    beschreibungen: [null, null, null, null, null],
+    erweiterungen: [
+      null,
+      null,
+      "Beton-Fertigteilwände (Fertiggarage), dünnwandig, gestrichen oder unverputzt.",
+      "Massives Mauerwerk oder Ortbeton, verputzt und gestrichen.",
+      "Massive Außenwände mit hochwertiger Fassade (Klinker, Wärmedämmung), Gestaltung passend zum Wohnhaus.",
+    ],
+  },
+  {
+    id: "konstruktion",
+    name: "Konstruktion",
+    gewicht: 23,
+    beschreibungen: [null, null, null, null, null],
+    erweiterungen: [
+      null,
+      null,
+      "Einteilige Beton-/Stahl-Fertigteilkonstruktion (aufgestellte Fertiggarage).",
+      "Massive Bauweise (gemauert oder Ortbeton) mit Stahlbetondecke/Ringanker.",
+      "Individuelle massive Konstruktion, größere Spannweiten (Doppel-/Großgarage), ggf. aufwendige Gründung.",
+    ],
+  },
+  {
+    id: "dach",
+    name: "Dach",
+    gewicht: 15,
+    beschreibungen: [null, null, null, null, null],
+    erweiterungen: [
+      null,
+      null,
+      "Flachdach mit Bitumen- oder Folienabdichtung (Fertiggarage).",
+      "Massives Flachdach mit Attika oder geneigtes Dach mit einfacher Eindeckung.",
+      "Ziegeldach (z. B. Satteldach passend zum Haupthaus) oder Dachbegrünung (Gründach).",
+    ],
+  },
+  {
+    id: "fenster",
+    name: "Fenster und Außentüren",
+    gewicht: 11,
+    beschreibungen: [null, null, null, null, null],
+    erweiterungen: [
+      null,
+      null,
+      "Einfaches Schwing-/Kipptor aus Stahlblech; keine Fenster.",
+      "Sektional- oder Rolltor, ggf. mit elektrischem Antrieb; Nebentür.",
+      "Hochwertiges gedämmtes Tor mit Antrieb und Funksteuerung; Fenster, Nebeneingangstür.",
+    ],
+  },
+  {
+    id: "fussboeden",
+    name: "Fußböden",
+    gewicht: 18,
+    beschreibungen: [null, null, null, null, null],
+    erweiterungen: [
+      null,
+      null,
+      "Rohbeton ohne Belag.",
+      "Estrich oder Gussasphalt.",
+      "Beschichteter Beton/Estrich oder Fliesenbelag.",
+    ],
+  },
+  {
+    id: "technik",
+    name: "Sonstige technische Ausstattung",
+    gewicht: 10,
+    beschreibungen: [null, null, null, null, null],
+    erweiterungen: [
+      null,
+      null,
+      "Ohne Elektroinstallation oder nur einzelner Lichtauslass.",
+      "Stromanschluss mit Steckdosen und Beleuchtung; elektrischer Torantrieb.",
+      "Wasser und Abwasser, Heizung, Wallbox/Ladepunkt, Alarmanlage.",
     ],
   },
 ];

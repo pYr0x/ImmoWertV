@@ -437,11 +437,13 @@
           </div>
           <GeschossListe bind:geschosse={s.garage.geschosse} />
           <Separator />
-          <AmtlicherHinweis
-            hinweis={GARAGEN_STUFEN_HINWEIS}
-            titel="Bedeutung der Standardstufen bei Garagen"
-            offen
-          />
+          {#if s.garage.nhkCode === "14.1"}
+            <AmtlicherHinweis
+              hinweis={GARAGEN_STUFEN_HINWEIS}
+              titel="Bedeutung der Standardstufen bei Garagen"
+              offen
+            />
+          {/if}
           {#if garageAusstattung.ungueltigeGruppen.length}
             <p class="text-destructive text-sm font-medium">Anteile je Kostengruppe müssen in Summe 100 % ergeben.</p>
           {/if}

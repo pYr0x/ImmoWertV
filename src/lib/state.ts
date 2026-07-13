@@ -5,6 +5,7 @@
 
 import type { Ausstattung } from "$lib/berechnung/sachwert";
 import {
+  KOSTENGRUPPEN_EINZELGARAGE,
   KOSTENGRUPPEN_GARAGE,
   KOSTENGRUPPEN_WOHNHAUS,
   nhkTyp,
@@ -46,7 +47,9 @@ export function kostengruppenFuer(typ: NhkTyp, gewichte: Record<string, number>)
     typ.gruppe === "wohnhaus"
       ? KOSTENGRUPPEN_WOHNHAUS
       : typ.gruppe === "garage"
-        ? KOSTENGRUPPEN_GARAGE
+        ? typ.code === "14.1"
+          ? KOSTENGRUPPEN_EINZELGARAGE
+          : KOSTENGRUPPEN_GARAGE
         : [
             {
               id: "gesamt",
